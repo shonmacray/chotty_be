@@ -1,4 +1,11 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+} from '@nestjs/common';
 import { ChatService } from './chat.service';
 
 @Controller('chat')
@@ -9,9 +16,9 @@ export class ChatController {
   async getAllGroups() {
     return this.chat.getAll();
   }
-
-  @Get(':id')
-  getAllChats(@Param('id') id: string) {
+  // get all chats in a room
+  @Get(':groupId')
+  getAllChats(@Param('groupId', new ParseIntPipe()) id: number) {
     return this.chat.getChats(id);
   }
 
@@ -20,8 +27,11 @@ export class ChatController {
     return this.chat.create(data);
   }
 
-  @Post('join/:id')
-  joinGroup(@Param('id') id: string, @Body() data: any) {
-    return this.chat.join(id, data);
+  @Post('join/:groupId')
+  joinGroup(
+    @Param('groupId', new ParseIntPipe()) id: number,
+    @Body() data: any,
+  ) {
+    return this.chat.join({ ...data, group_id: id });
   }
 }

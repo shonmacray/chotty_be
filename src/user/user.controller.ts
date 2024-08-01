@@ -7,6 +7,6 @@ export class UserController {
 
   @Get('groups')
   getGroups() {
-    return this.user.getMyGroups('id');
+    return this.user.getMyGroups(1);
   }
 }

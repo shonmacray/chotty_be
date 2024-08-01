@@ -14,11 +14,12 @@ datasource db {
 }
 
 model Group {
-  id          Int      @id() @default(autoincrement())
-  name        String   @unique
+  id          Int         @id() @default(autoincrement())
+  name        String      @unique
   description String
-  updated_at  DateTime @updatedAt
-  created_at  DateTime @default(now())
+  updated_at  DateTime    @updatedAt
+  created_at  DateTime    @default(now())
+  User_group  UserGroup[]
 
   @@map("groups")
 }
@@ -38,6 +39,7 @@ model User {
 model UserGroup {
   id         Int      @id() @default(autoincrement())
   user_id    Int
+  group      Group    @relation(fields: [group_id], references: [id])
   group_id   Int
   created_at DateTime @default(now())
 

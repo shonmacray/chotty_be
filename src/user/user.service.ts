@@ -1,10 +1,15 @@
 import { Injectable } from '@nestjs/common';
+import { UserGroup, Group } from '@prisma/client';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class UserService {
-  async getMyGroups(id: string) {
-    console.log(id);
+  constructor(private prisma: PrismaService) {}
 
-    return { groups: [] };
+  async getMyGroups(id: number): Promise<UserGroup[] & { group: Group }[]> {
+    return await this.prisma.userGroup.findMany({
+      where: { user_id: id },
+      include: { group: true },
+    });
   }
 }
