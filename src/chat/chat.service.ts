@@ -20,8 +20,8 @@ export class ChatService {
     }
     return { created: false };
   }
-  async saveChat(message: any) {
-    console.log(message);
+  async saveChat(data: Prisma.ChatCreateInput) {
+    await this.prisma.chat.create({ data });
   }
   async getChats(id: number): Promise<Chat[]> {
     return await this.prisma.chat.findMany({ where: { group_id: id } });

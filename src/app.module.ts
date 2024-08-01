@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ChatModule } from './chat/chat.module';
 import { UserModule } from './user/user.module';
-import { ChatGateway } from './chat/chat.gateway';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
+import { SocketModule } from './socket/socket.module';
 
 @Module({
   imports: [
@@ -11,7 +11,7 @@ import { PrismaModule } from './prisma/prisma.module';
     UserModule,
     ConfigModule.forRoot({ isGlobal: true }),
     PrismaModule,
+    SocketModule,
   ],
-  providers: [ChatGateway],
 })
 export class AppModule {}
