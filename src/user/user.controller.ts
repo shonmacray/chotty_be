@@ -1,12 +1,16 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Req, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
+import { Request } from 'express';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @Controller('user')
 export class UserController {
   constructor(private user: UserService) {}
 
+  @UseGuards(AuthGuard)
   @Get('groups')
-  getGroups() {
-    return this.user.getMyGroups(1);
+  getGroups(@Req() req: Request) {
+    const { sub } = req['user'];
+    return this.user.getMyGroups(sub);
   }
 }

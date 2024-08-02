@@ -6,8 +6,13 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class ChatService {
   constructor(private prisma: PrismaService) {}
 
-  async getAll(): Promise<Group[]> {
-    return await this.prisma.group.findMany();
+  async getAll(userId: number): Promise<Group[]> {
+    const mysubscriptions = await this.prisma.userGroup.findMany({
+      where: { user_id: userId },
+    });
+    const ids = mysubscriptions.map((sub) => sub.group_id);
+
+    return await this.prisma.group.findMany({ where: { id: { notIn: ids } } });
   }
   async create(data: any) {
     console.log(data);
