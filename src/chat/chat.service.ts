@@ -29,6 +29,9 @@ export class ChatService {
     await this.prisma.chat.create({ data });
   }
   async getChats(id: number): Promise<Chat[]> {
-    return await this.prisma.chat.findMany({ where: { group_id: id } });
+    return await this.prisma.chat.findMany({
+      where: { group_id: id },
+      orderBy: { created_at: 'asc' },
+    });
   }
 }

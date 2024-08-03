@@ -6,6 +6,8 @@ import {
 import { Server, Socket } from 'socket.io';
 import { ChatService } from '../chat/chat.service';
 import { randomUUID } from 'crypto';
+import { UseGuards } from '@nestjs/common';
+import { SocketGuard } from 'src/guards/socket.guard';
 
 @WebSocketGateway({ namespace: 'group', cors: true })
 export class ChatGateway {
@@ -15,17 +17,17 @@ export class ChatGateway {
   server: Server;
 
   @SubscribeMessage('join')
-  handleJoinRequest(client: Socket, room: string) {
+  handleJoinRequest(client: Socket, room: string | string[]) {
     client.join(room);
   }
 
+  @UseGuards(SocketGuard)
   @SubscribeMessage('message')
-  handleMessage(_: any, payload: any): void {
+  handleMessage(client: any, payload: any): void {
     payload.id = randomUUID();
-
     this.server.to(payload.room).emit('member', payload);
     this.chat.saveChat({
-      user_id: parseInt(payload.user_id),
+      user_id: client.user.sub,
       group_id: parseInt(payload.group_id),
       text: payload.text,
     });
