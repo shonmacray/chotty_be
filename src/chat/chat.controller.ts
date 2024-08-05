@@ -34,10 +34,11 @@ export class ChatController {
   }
 
   @Post('join/:groupId')
+  @UseGuards(AuthGuard)
   joinGroup(
     @Param('groupId', new ParseIntPipe()) id: number,
-    @Body() data: any,
+    @Req() req: Request,
   ) {
-    return this.chat.join({ ...data, group_id: id });
+    return this.chat.join({ user_id: req['user'].sub, group_id: id });
   }
 }

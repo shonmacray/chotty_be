@@ -18,7 +18,7 @@ export class ChatService {
     console.log(data);
     return { id: 'group id' };
   }
-  async join(data: Prisma.UserGroupCreateInput): Promise<{ created: boolean }> {
+  async join(data: any): Promise<{ created: boolean }> {
     const created = await this.prisma.userGroup.create({ data });
     if (created) {
       return { created: true };

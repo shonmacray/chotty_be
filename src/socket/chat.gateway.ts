@@ -5,7 +5,6 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { ChatService } from '../chat/chat.service';
-// import { randomUUID } from 'crypto';
 import { UseGuards } from '@nestjs/common';
 import { SocketGuard } from 'src/guards/socket.guard';
 
