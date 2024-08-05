@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Chat, Group, Prisma } from '@prisma/client';
+import { Chat, Group } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -25,13 +25,14 @@ export class ChatService {
     }
     return { created: false };
   }
-  async saveChat(data: Prisma.ChatCreateInput) {
+  async saveChat(data: any) {
     await this.prisma.chat.create({ data });
   }
   async getChats(id: number): Promise<Chat[]> {
     return await this.prisma.chat.findMany({
       where: { group_id: id },
       orderBy: { created_at: 'asc' },
+      include: { user: true },
     });
   }
 }

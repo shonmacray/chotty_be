@@ -30,6 +30,7 @@ model User {
   last_name     String
   email_address String   @unique
   hash          String
+  chats         Chat[]
   updated_at    DateTime @updatedAt
   created_at    DateTime @default(now())
 
@@ -47,8 +48,10 @@ model UserGroup {
 }
 
 model Chat {
-  id         Int      @id() @default(autoincrement())
-  text       String
+  id   Int    @id() @default(autoincrement())
+  text String
+
+  user       User     @relation(fields: [user_id], references: [id])
   user_id    Int
   group_id   Int
   created_at DateTime @default(now())
