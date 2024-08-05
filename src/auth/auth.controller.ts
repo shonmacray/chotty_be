@@ -17,7 +17,7 @@ export class AuthController {
   ) {}
 
   @Post('login')
-  async login(@Body() data: any) {
+  async login(@Body() data: LoginDto) {
     const user = await this.user.getUser({ email_address: data.email_address });
     if (!user) {
       throw new NotFoundException();
