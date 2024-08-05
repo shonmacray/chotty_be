@@ -5,7 +5,7 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { ChatService } from '../chat/chat.service';
-import { randomUUID } from 'crypto';
+// import { randomUUID } from 'crypto';
 import { UseGuards } from '@nestjs/common';
 import { SocketGuard } from 'src/guards/socket.guard';
 
@@ -24,7 +24,7 @@ export class ChatGateway {
   @UseGuards(SocketGuard)
   @SubscribeMessage('message')
   handleMessage(client: any, payload: any): void {
-    payload.id = randomUUID();
+    payload.id = payload.last_id;
     this.server.to(payload.room).emit('member', payload);
     this.chat.saveChat({
       user_id: client.user.sub,

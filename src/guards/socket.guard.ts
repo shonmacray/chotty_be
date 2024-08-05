@@ -1,10 +1,6 @@
-import {
-  CanActivate,
-  ExecutionContext,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { JsonWebTokenError, JwtService } from '@nestjs/jwt';
+import { WsException } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
 
 @Injectable()
@@ -26,7 +22,7 @@ export class SocketGuard implements CanActivate {
           return true;
         } catch (error) {
           if (error instanceof JsonWebTokenError) {
-            throw new UnauthorizedException(error.message);
+            throw new WsException(error.message);
           }
         }
       }
