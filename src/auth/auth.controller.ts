@@ -22,7 +22,7 @@ export class AuthController {
   async login(@Body() data: LoginDto) {
     const user = await this.user.getUser({ email_address: data.email_address });
     if (!user) {
-      throw new NotFoundException();
+      throw new NotFoundException('User not found');
     }
 
     const isMatch = await verify(user.hash, data.password);
@@ -34,7 +34,7 @@ export class AuthController {
       };
     }
 
-    throw new UnauthorizedException();
+    throw new UnauthorizedException('Email/Password is wrong');
   }
 
   @Post('signup')
