@@ -31,6 +31,7 @@ model User {
   last_name     String
   email_address String   @unique
   hash          String
+  color         Color?   @default(cyan)
   chats         Chat[]
   updated_at    DateTime @updatedAt
   created_at    DateTime @default(now())
@@ -58,4 +59,17 @@ model Chat {
   created_at DateTime @default(now())
 
   @@map("chats")
+}
+
+enum Color {
+  blue
+  green
+  orange
+  yellow
+  lime
+  teal
+  cyan
+  violet
+  pink
+  rose
 }

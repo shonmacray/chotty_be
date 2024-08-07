@@ -29,7 +29,7 @@ export class AuthController {
     if (isMatch) {
       const payload = { sub: user.id, email_adress: user.email_address };
       return {
-        user: { id: user.id },
+        user: { id: user.id, color: user.color },
         access_token: await this.jwt.signAsync(payload),
       };
     }
@@ -41,7 +41,7 @@ export class AuthController {
   async signup(@Body() data: SignupDto) {
     const passwordHash = await hash(data.password);
 
-    const { email_address, id } = await this.user.create({
+    const { email_address, id, color } = await this.user.create({
       hash: passwordHash,
       first_name: data.first_name,
       last_name: data.last_name,
@@ -51,7 +51,7 @@ export class AuthController {
     const payload = { sub: id, email_address };
 
     return {
-      user: { id },
+      user: { id, color },
       access_token: await this.jwt.signAsync(payload),
     };
   }

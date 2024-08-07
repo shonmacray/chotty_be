@@ -34,4 +34,11 @@ export class UserService {
       include: { User_group: true },
     });
   }
+
+  async updateUser(
+    where: Prisma.UserWhereUniqueInput,
+    data: Prisma.UserUpdateInput,
+  ): Promise<Partial<User>> {
+    return await this.prisma.user.update({ where, data, select: { id: true } });
+  }
 }
