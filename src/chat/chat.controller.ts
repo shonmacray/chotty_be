@@ -11,6 +11,7 @@ import {
 import { ChatService } from './chat.service';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { Request } from 'express';
+import { CreateDto } from './dto/create.dto';
 
 @Controller('chat')
 export class ChatController {
@@ -29,7 +30,7 @@ export class ChatController {
   }
 
   @Post()
-  createGroup(@Body() data: any) {
+  createGroup(@Body() data: CreateDto) {
     return this.chat.create(data);
   }
 

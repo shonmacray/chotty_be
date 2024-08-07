@@ -1,5 +1,5 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { UserGroup, Group, User, Prisma } from '@prisma/client';
+import { Group, User, Prisma } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { PrismaService } from 'src/prisma/prisma.service';
 
@@ -21,10 +21,17 @@ export class UserService {
     }
   }
 
-  async getMyGroups(id: number): Promise<UserGroup[] & { group: Group }[]> {
-    return await this.prisma.userGroup.findMany({
+  async getMyGroups(id: number): Promise<Group[]> {
+    // repeated
+    const myGroups = await this.prisma.userGroup.findMany({
       where: { user_id: id },
-      include: { group: true },
+      select: { group_id: true },
+    });
+    const ids = myGroups.map((group) => group.group_id);
+
+    return await this.prisma.group.findMany({
+      where: { id: { in: ids } },
+      include: { User_group: true },
     });
   }
 }
