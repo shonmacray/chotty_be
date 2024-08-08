@@ -9,6 +9,13 @@ export class UserController {
   constructor(private user: UserService) {}
 
   @UseGuards(AuthGuard)
+  @Get()
+  getUser(@Req() req: Request) {
+    const { sub: id } = req['user'];
+    return this.user.getUser({ id });
+  }
+
+  @UseGuards(AuthGuard)
   @Get('groups')
   getGroups(@Req() req: Request) {
     const { sub } = req['user'];
